@@ -28,7 +28,7 @@ public class TicketService {
     private final MessageProducer producer;
     private final AuditRepository auditRepo;
 
-    // ✅ CREATE
+    //  CREATE
     public TicketResponseDTO createTicket(String xml) throws Exception {
 
         XmlValidator.validate(xml);
@@ -40,7 +40,7 @@ public class TicketService {
 
         Ticket ticket = mapper.toEntity(dto);
 
-        // ✅ APPLY BUSINESS LOGIC AFTER MAPPING
+        // APPLY BUSINESS LOGIC AFTER MAPPING
         if ("TECHNICAL".equals(dto.getIssueType())) {
             ticket.setPriority("MEDIUM");
         }
@@ -56,7 +56,7 @@ public class TicketService {
         return mapper.toDTO(ticket);
     }
 
-    // ✅ GET BY ID
+    // GET BY ID
     public TicketResponseDTO getTicket(Long id) {
         Ticket t = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
@@ -64,7 +64,7 @@ public class TicketService {
         return mapper.toDTO(t);
     }
 
-    // ✅ GET ALL
+    // GET ALL
     public List<TicketResponseDTO> getAllTickets() {
         return repo.findAll()
                 .stream()
@@ -72,16 +72,16 @@ public class TicketService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ ✅ UPDATE (FULL FIX)
+    // UPDATE (FULL FIX)
     public TicketResponseDTO updateTicket(Long id, TicketResponseDTO dto) {
 
         Ticket ticket = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
 
-        // ✅ UPDATE ALL FIELDS
+        //  UPDATE ALL FIELDS
         ticket.setPriority(dto.getPriority());
         ticket.setStatus(dto.getStatus());
-        ticket.setDescription(dto.getDescription());  // ✅ FIXED
+        ticket.setDescription(dto.getDescription());  
 
         repo.save(ticket);
 
@@ -90,7 +90,7 @@ public class TicketService {
         return mapper.toDTO(ticket);
     }
 
-    // ✅ DELETE
+    //  DELETE
     public void deleteTicket(Long id) {
 
         Ticket ticket = repo.findById(id)
